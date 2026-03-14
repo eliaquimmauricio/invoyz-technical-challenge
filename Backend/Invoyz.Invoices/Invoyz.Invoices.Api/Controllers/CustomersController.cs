@@ -1,6 +1,4 @@
 using Invoyz.Invoices.Domain.Dtos.Customers;
-using Invoyz.Invoices.Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Invoyz.Invoices.Api.Controllers
 {
