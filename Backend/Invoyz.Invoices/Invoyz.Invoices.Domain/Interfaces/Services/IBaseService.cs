@@ -1,11 +1,11 @@
 ﻿namespace Invoyz.Invoices.Domain.Interfaces.Services
 {
-    public interface IBaseService
+    public interface IBaseService<TReadDto, TWriteDto>
     {
-        public Task<IEnumerable<T>> GetAllAsync<T>();
-        public Task<T?> GetByIdAsync<T>(Guid id);
-        public Task<T> CreateAsync<T>(T entity);
-        public Task UpdateAsync<T>(T entity);
-        public Task DeleteAsync(Guid id);
+        Task<IEnumerable<TReadDto>> GetAllAsync();
+        Task<TReadDto?> GetByIdAsync(Guid id);
+        Task<TReadDto> CreateAsync(TWriteDto dto);
+        Task UpdateAsync(Guid id, TWriteDto dto);
+        Task DeleteAsync(Guid id);
     }
 }

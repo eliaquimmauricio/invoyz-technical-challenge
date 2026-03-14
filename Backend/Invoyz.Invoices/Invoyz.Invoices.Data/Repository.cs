@@ -1,14 +1,18 @@
-﻿using Invoyz.Invoices.Domain.Entities;
-using Invoyz.Invoices.Domain.Interfaces.Data;
+﻿using Invoyz.Invoices.Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Invoyz.Invoices.Data
 {
-    public class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : class
     {
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await context.Set<TEntity>().AsNoTracking().ToListAsync();
+        }
+
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
-            return await context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
         public async Task AddAsync(TEntity entity)

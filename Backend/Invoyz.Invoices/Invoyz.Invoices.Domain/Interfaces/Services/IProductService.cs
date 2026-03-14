@@ -1,6 +1,8 @@
-﻿namespace Invoyz.Invoices.Domain.Interfaces.Services
+﻿using Invoyz.Invoices.Domain.Dtos.Products;
+
+namespace Invoyz.Invoices.Domain.Interfaces.Services
 {
-    public interface IProductService
+    public interface IProductService : IBaseService<ProductReadDto, ProductWriteDto>
     {
     }
 }

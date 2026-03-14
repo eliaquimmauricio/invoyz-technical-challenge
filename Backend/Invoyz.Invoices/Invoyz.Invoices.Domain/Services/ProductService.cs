@@ -1,32 +1,15 @@
-﻿using Invoyz.Invoices.Domain.Interfaces.Services;
+﻿using Invoyz.Invoices.Domain.Dtos.Products;
+using Invoyz.Invoices.Domain.Entities;
+using Invoyz.Invoices.Domain.Interfaces.Data;
+using Invoyz.Invoices.Domain.Interfaces.Services;
 
 namespace Invoyz.Invoices.Domain.Services
 {
-    public class ProductService : BaseService, IProductService
+    public class ProductService(IRepository<Product> repository) : BaseService<Product, ProductReadDto, ProductWriteDto>(repository), IProductService
     {
-        public override Task<T> CreateAsync<T>(T entity)
+        protected override Product CreateEntityFromWriteDto(ProductWriteDto dto)
         {
-            throw new NotImplementedException();
-        }
-
-        public override Task DeleteAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IEnumerable<T>> GetAllAsync<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<T?> GetByIdAsync<T>(Guid id) where T : default
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task UpdateAsync<T>(T entity)
-        {
-            throw new NotImplementedException();
+            return Product.FromWriteDto(dto);
         }
     }
 }

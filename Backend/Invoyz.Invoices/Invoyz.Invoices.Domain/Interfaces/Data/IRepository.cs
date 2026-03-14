@@ -1,15 +1,14 @@
-﻿using Invoyz.Invoices.Domain.Entities;
-
-namespace Invoyz.Invoices.Domain.Interfaces.Data
+﻿namespace Invoyz.Invoices.Domain.Interfaces.Data
 {
-    public interface IRepository<TEntity> where TEntity : BaseEntity
+    public interface IRepository<TEntity> where TEntity : class
     {
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity?> GetByIdAsync(Guid id);
         Task AddAsync(TEntity entity);
         Task AddRange(IEnumerable<TEntity> entities);
-        void Delete(TEntity entity);
-        Task<TEntity?> GetByIdAsync(Guid id);
-        Task SaveChangesAsync();
         void Update(TEntity entity);
         void UpdateRange(IEnumerable<TEntity> entities);
+        void Delete(TEntity entity);
+        Task SaveChangesAsync();
     }
 }
