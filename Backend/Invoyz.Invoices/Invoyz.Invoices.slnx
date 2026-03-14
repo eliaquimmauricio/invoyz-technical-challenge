@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/0 - Test/" />
-  <Folder Name="/1 - Presentation/" />
+  <Folder Name="/1 - Presentation/">
+    <Project Path="Invoyz.Invoices.Api/Invoyz.Invoices.Api.csproj" />
+  </Folder>
   <Folder Name="/2 - Domain/">
     <Project Path="Invoyz.Invoices.Domain/Invoyz.Invoices.Domain.csproj" />
   </Folder>
