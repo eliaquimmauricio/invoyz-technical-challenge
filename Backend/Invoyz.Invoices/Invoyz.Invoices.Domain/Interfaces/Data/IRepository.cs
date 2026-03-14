@@ -1,8 +1,8 @@
 ﻿using Invoyz.Invoices.Domain.Entities;
 
-namespace Invoyz.Invoices.Domain.Interfaces
+namespace Invoyz.Invoices.Domain.Interfaces.Data
 {
-    public interface IRepository<TEntity> where TEntity : EntityBase
+    public interface IRepository<TEntity> where TEntity : BaseEntity
     {
         Task AddAsync(TEntity entity);
         Task AddRange(IEnumerable<TEntity> entities);

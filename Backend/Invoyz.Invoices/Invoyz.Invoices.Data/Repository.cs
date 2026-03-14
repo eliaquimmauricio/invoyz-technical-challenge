@@ -1,10 +1,10 @@
 ﻿using Invoyz.Invoices.Domain.Entities;
-using Invoyz.Invoices.Domain.Interfaces;
+using Invoyz.Invoices.Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Invoyz.Invoices.Data
 {
-    public class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : EntityBase
+    public class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : BaseEntity
     {
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
