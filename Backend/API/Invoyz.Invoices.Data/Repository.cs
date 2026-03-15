@@ -11,17 +11,25 @@ namespace Invoyz.Invoices.Data
             return await context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
+
+            query = include(query);
+
+            return await query.ToListAsync();
+        }
+
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
             return await context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity?> GetByIdAsync(Guid id, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<TEntity?> GetByIdAsync(Guid id, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
         {
             IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
 
-            foreach (var include in includes)
-                query = query.Include(include);
+            query = include(query);
 
             return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
         }

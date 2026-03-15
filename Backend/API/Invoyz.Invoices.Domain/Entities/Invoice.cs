@@ -38,11 +38,14 @@ namespace Invoyz.Invoices.Domain.Entities
 
         public override void UpdateFromWriteDto(InvoiceWriteDto dto)
         {
+            var lines = dto.Lines?.Select(l => InvoiceLine.FromWriteDto(l, Guid.Empty)).ToList() ?? [];
+
             InvoiceNumber = dto.InvoiceNumber;
             CustomerId = dto.CustomerId;
             IssueDate = dto.IssueDate;
             DueDate = dto.DueDate;
             Status = dto.Status;
+            Lines = lines;
         }
 
         public static Invoice FromWriteDto(InvoiceWriteDto dto)

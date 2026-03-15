@@ -20,10 +20,6 @@
               <v-icon left>mdi-file-pdf-box</v-icon>
               Download PDF
             </v-btn>
-            <v-btn color="secondary" @click="editInvoice">
-              <v-icon left>mdi-pencil</v-icon>
-              Edit
-            </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -204,11 +200,6 @@ const loadInvoice = async () => {
 }
 
 const goBack = () => {
-  router.push('/invoices')
-}
-
-const editInvoice = () => {
-  notificationStore.showInfo('Edit functionality available in the Invoices page')
   router.push('/invoices')
 }
 

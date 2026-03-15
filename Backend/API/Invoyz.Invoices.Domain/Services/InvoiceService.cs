@@ -2,6 +2,7 @@
 using Invoyz.Invoices.Domain.Entities;
 using Invoyz.Invoices.Domain.Interfaces.Data;
 using Invoyz.Invoices.Domain.Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Invoyz.Invoices.Domain.Services
 {
@@ -14,9 +15,16 @@ namespace Invoyz.Invoices.Domain.Services
 
         public override async Task<InvoiceReadDto?> GetByIdAsync(Guid id)
         {
-            var entity = await repository.GetByIdAsync(id, i => i.Lines);
+            var entity = await repository.GetByIdAsync(id, query => query.Include(i => i.Lines).ThenInclude(l => l.Product));
 
             return entity?.ToReadDto();
+        }
+
+        public override async Task<IEnumerable<InvoiceReadDto>> GetAllAsync()
+        {
+            var entities = await repository.GetAllAsync(query => query.Include(i => i.Lines).ThenInclude(l => l.Product));
+
+            return entities.Select(e => e.ToReadDto());
         }
     }
 }
