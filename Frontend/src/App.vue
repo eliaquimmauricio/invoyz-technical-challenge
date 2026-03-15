@@ -1,17 +1,16 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" prominent>
+    <v-app-bar color="surface" elevation="0" class="app-bar">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       
-      <v-toolbar-title>
-        <v-icon class="mr-2">mdi-file-document-outline</v-icon>
-        Invoyz
+      <v-toolbar-title class="d-flex align-center">
+        <span class="brand-title">Invoyz</span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn icon @click="toggleTheme">
-        <v-icon>{{ theme.global.name.value === 'light' ? 'mdi-weather-night' : 'mdi-weather-sunny' }}</v-icon>
+      <v-btn icon @click="toggleTheme" variant="text">
+        <v-icon>{{ theme.global.name.value === 'invoyzLight' ? 'mdi-weather-night' : 'mdi-weather-sunny' }}</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -74,12 +73,47 @@ const notificationStore = useNotificationStore()
 const { snackbar } = storeToRefs(notificationStore)
 
 const toggleTheme = () => {
-  theme.global.name.value = theme.global.name.value === 'light' ? 'dark' : 'light'
+  theme.global.name.value = theme.global.name.value === 'invoyzLight' ? 'invoyzDark' : 'invoyzLight'
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 html {
   overflow-y: auto;
+}
+
+* {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.brand-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.v-card {
+  border-radius: 12px !important;
+}
+
+.v-btn {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+}
+
+.text-h3, .text-h4, .text-h5, .text-h6 {
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
 }
 </style>

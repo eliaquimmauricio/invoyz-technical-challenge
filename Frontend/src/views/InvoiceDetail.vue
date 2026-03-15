@@ -31,8 +31,9 @@
       <v-row>
         <v-col cols="12" md="8">
           <v-card class="mb-4">
-            <v-card-title class="bg-primary">
-              <span class="text-white">Invoice Information</span>
+            <v-card-title class="card-header">
+              <v-icon left color="primary">mdi-file-document-outline</v-icon>
+              <span>Invoice Information</span>
             </v-card-title>
             <v-card-text class="pt-4">
               <v-row>
@@ -71,8 +72,9 @@
           </v-card>
 
           <v-card>
-            <v-card-title class="bg-primary">
-              <span class="text-white">Invoice Lines</span>
+            <v-card-title class="card-header">
+              <v-icon left color="primary">mdi-format-list-bulleted</v-icon>
+              <span>Invoice Lines</span>
             </v-card-title>
             <v-card-text class="pa-0">
               <v-table>
@@ -112,8 +114,9 @@
 
         <v-col cols="12" md="4">
           <v-card class="mb-4">
-            <v-card-title class="bg-primary">
-              <span class="text-white">Customer Information</span>
+            <v-card-title class="card-header">
+              <v-icon left color="primary">mdi-account</v-icon>
+              <span>Customer Information</span>
             </v-card-title>
             <v-card-text class="pt-4">
               <div class="mb-3">
@@ -135,9 +138,10 @@
             </v-card-text>
           </v-card>
 
-          <v-card>
-            <v-card-title class="bg-success">
-              <span class="text-white">Invoice Total</span>
+          <v-card class="total-card">
+            <v-card-title class="card-header">
+              <v-icon left color="success">mdi-calculator</v-icon>
+              <span>Invoice Total</span>
             </v-card-title>
             <v-card-text class="pt-4">
               <div class="d-flex justify-space-between mb-2">
@@ -223,78 +227,103 @@ const generatePDF = () => {
       <title>Invoice ${invoice.value.invoiceNumber}</title>
       <style>
         body {
-          font-family: Arial, sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
           margin: 40px;
-          color: #333;
+          color: #1E293B;
         }
         .header {
           display: flex;
           justify-content: space-between;
           margin-bottom: 40px;
           padding-bottom: 20px;
-          border-bottom: 2px solid #1976D2;
+          border-bottom: 3px solid #6366F1;
         }
         .invoice-title {
-          font-size: 32px;
-          color: #1976D2;
+          font-size: 36px;
+          color: #6366F1;
           margin: 0;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+        .brand-logo {
+          font-size: 24px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 8px;
         }
         .invoice-number {
           font-size: 18px;
-          color: #666;
+          color: #64748B;
+          font-weight: 500;
         }
         .section {
           margin-bottom: 30px;
         }
         .section-title {
           font-size: 18px;
-          font-weight: bold;
-          color: #1976D2;
+          font-weight: 700;
+          color: #6366F1;
           margin-bottom: 10px;
           padding-bottom: 5px;
-          border-bottom: 1px solid #ddd;
+          border-bottom: 2px solid #E2E8F0;
         }
         .info-row {
           display: flex;
           margin-bottom: 8px;
         }
         .info-label {
-          font-weight: bold;
+          font-weight: 600;
           width: 150px;
+          color: #475569;
+        }
+        .info-value {
+          color: #1E293B;
         }
         table {
           width: 100%;
           border-collapse: collapse;
           margin: 20px 0;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         th {
-          background-color: #1976D2;
+          background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
           color: white;
-          padding: 12px;
+          padding: 14px 12px;
           text-align: left;
+          font-weight: 600;
         }
         td {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
+          padding: 12px;
+          border-bottom: 1px solid #E2E8F0;
+        }
+        tr:hover {
+          background-color: #F8FAFC;
         }
         .text-right {
           text-align: right;
         }
         .totals {
           float: right;
-          width: 300px;
+          width: 350px;
           margin-top: 20px;
+          background: #F8FAFC;
+          padding: 20px;
+          border-radius: 8px;
         }
         .totals-row {
           display: flex;
           justify-content: space-between;
-          padding: 8px 0;
+          padding: 10px 0;
+          font-size: 16px;
         }
         .grand-total {
-          font-size: 24px;
-          font-weight: bold;
-          color: #4CAF50;
-          border-top: 2px solid #333;
+          font-size: 28px;
+          font-weight: 800;
+          color: #10B981;
+          border-top: 3px solid #6366F1;
           padding-top: 15px;
           margin-top: 15px;
         }
@@ -307,11 +336,12 @@ const generatePDF = () => {
     <body>
       <div class="header">
         <div>
+          <div class="brand-logo">invoyz</div>
           <h1 class="invoice-title">INVOICE</h1>
-          <p class="invoice-number">${invoice.value.invoiceNumber}</p>
+          <p class="invoice-number">#${invoice.value.invoiceNumber}</p>
         </div>
         <div>
-          <button class="no-print" onclick="window.print()" style="padding: 10px 20px; background: #1976D2; color: white; border: none; cursor: pointer; border-radius: 4px;">
+          <button class="no-print" onclick="window.print()" style="padding: 12px 24px; background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: 600; font-size: 14px;">
             Print / Save as PDF
           </button>
         </div>
@@ -322,19 +352,19 @@ const generatePDF = () => {
           <div class="section-title">Customer Information</div>
           <div class="info-row">
             <span class="info-label">Name:</span>
-            <span>${invoice.value.customer?.name || 'N/A'}</span>
+            <span class="info-value">${invoice.value.customer?.name || 'N/A'}</span>
           </div>
           <div class="info-row">
             <span class="info-label">VAT Number:</span>
-            <span>${invoice.value.customer?.vatNumber || 'N/A'}</span>
+            <span class="info-value">${invoice.value.customer?.vatNumber || 'N/A'}</span>
           </div>
           <div class="info-row">
             <span class="info-label">Email:</span>
-            <span>${invoice.value.customer?.email || 'N/A'}</span>
+            <span class="info-value">${invoice.value.customer?.email || 'N/A'}</span>
           </div>
           <div class="info-row">
             <span class="info-label">Address:</span>
-            <span>${invoice.value.customer?.address || 'N/A'}</span>
+            <span class="info-value">${invoice.value.customer?.address || 'N/A'}</span>
           </div>
         </div>
 
@@ -413,3 +443,21 @@ onMounted(() => {
   loadInvoice()
 })
 </script>
+
+<style scoped>
+.card-header {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.total-card {
+  border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.text-success {
+  color: #10B981 !important;
+}
+</style>
