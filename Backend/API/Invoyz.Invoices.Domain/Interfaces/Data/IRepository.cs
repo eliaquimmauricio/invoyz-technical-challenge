@@ -1,9 +1,12 @@
-﻿namespace Invoyz.Invoices.Domain.Interfaces.Data
+﻿using System.Linq.Expressions;
+
+namespace Invoyz.Invoices.Domain.Interfaces.Data
 {
     public interface IRepository<TEntity> where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(Guid id);
+        Task<TEntity?> GetByIdAsync(Guid id, params Expression<Func<TEntity, object>>[] includes);
         Task AddAsync(TEntity entity);
         Task AddRange(IEnumerable<TEntity> entities);
         void Update(TEntity entity);

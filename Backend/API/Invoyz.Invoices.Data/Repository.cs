@@ -1,5 +1,6 @@
 ﻿using Invoyz.Invoices.Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Invoyz.Invoices.Data
 {
@@ -14,6 +15,17 @@ namespace Invoyz.Invoices.Data
         {
             return await context.Set<TEntity>().FindAsync(id);
         }
+
+        public async Task<TEntity?> GetByIdAsync(Guid id, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
+        }
+
 
         public async Task AddAsync(TEntity entity)
         {

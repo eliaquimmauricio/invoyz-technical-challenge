@@ -11,5 +11,12 @@ namespace Invoyz.Invoices.Domain.Services
         {
             return Invoice.FromWriteDto(dto);
         }
+
+        public override async Task<InvoiceReadDto?> GetByIdAsync(Guid id)
+        {
+            var entity = await repository.GetByIdAsync(id, i => i.Lines);
+
+            return entity?.ToReadDto();
+        }
     }
 }
