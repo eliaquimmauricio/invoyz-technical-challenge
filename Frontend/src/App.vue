@@ -50,7 +50,7 @@
       v-model="snackbar.show"
       :color="snackbar.color"
       :timeout="3000"
-      location="top right"
+      location="bottom"
     >
       {{ snackbar.text }}
       <template v-slot:actions>
