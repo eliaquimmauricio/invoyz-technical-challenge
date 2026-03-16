@@ -5,7 +5,7 @@ using Invoyz.Invoices.Domain.Interfaces.Services;
 
 namespace Invoyz.Invoices.Domain.Services
 {
-    public class ProductService(IRepository<Product> repository) : BaseService<Product, ProductReadDto, ProductWriteDto>(repository), IProductService
+    public class ProductService(IRepository<Product, ProductReadDto, ProductWriteDto> repository) : BaseService<Product, ProductReadDto, ProductWriteDto>(repository), IProductService
     {
         protected override Product CreateEntityFromWriteDto(ProductWriteDto dto)
         {

@@ -1,10 +1,13 @@
-﻿using Invoyz.Invoices.Domain.Interfaces.Data;
+﻿using Invoyz.Invoices.Domain.Entities;
+using Invoyz.Invoices.Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Invoyz.Invoices.Data
 {
-    public class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity, TReadDto, TWriteDto>(DbContext context) : IRepository<TEntity, TReadDto, TWriteDto> 
+        where TEntity : BaseEntity<TReadDto, TWriteDto> 
+        where TReadDto : class 
+        where TWriteDto : class
     {
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
@@ -31,27 +34,44 @@ namespace Invoyz.Invoices.Data
 
             query = include(query);
 
-            return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
+            return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
 
         public async Task AddAsync(TEntity entity)
         {
+            entity.CreatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
+
             await context.Set<TEntity>().AddAsync(entity);
         }
 
         public async Task AddRange(IEnumerable<TEntity> entities)
         {
+            foreach (var entity in entities)
+            {
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.UpdatedAt = DateTime.UtcNow;
+            }
+
             await context.Set<TEntity>().AddRangeAsync(entities);
         }
 
         public void Update(TEntity entity)
         {
+            entity.UpdatedAt = DateTime.UtcNow;
+
             context.Set<TEntity>().Update(entity);
         }
 
         public void UpdateRange(IEnumerable<TEntity> entities)
         {
+            foreach (var entity in entities)
+            {
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.UpdatedAt = DateTime.UtcNow;
+            }
+
             context.Set<TEntity>().UpdateRange(entities);
         }
 

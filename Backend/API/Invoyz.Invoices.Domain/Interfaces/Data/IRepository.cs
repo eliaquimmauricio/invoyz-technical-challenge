@@ -1,8 +1,11 @@
-﻿using System.Linq.Expressions;
+﻿using Invoyz.Invoices.Domain.Entities;
 
 namespace Invoyz.Invoices.Domain.Interfaces.Data
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity, TReadDto, TWriteDto> 
+        where TEntity : BaseEntity<TReadDto, TWriteDto> 
+        where TReadDto : class 
+        where TWriteDto : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> include);

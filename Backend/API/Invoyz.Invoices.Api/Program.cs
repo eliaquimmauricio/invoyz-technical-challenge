@@ -1,7 +1,10 @@
 using Invoyz.Invoices.Data;
+using Invoyz.Invoices.Domain.Dtos.Customers;
+using Invoyz.Invoices.Domain.Dtos.InvoiceLines;
+using Invoyz.Invoices.Domain.Dtos.Invoices;
+using Invoyz.Invoices.Domain.Dtos.Products;
 using Invoyz.Invoices.Domain.Entities;
 using Invoyz.Invoices.Domain.Interfaces.Data;
-using Invoyz.Invoices.Domain.Interfaces.Services;
 using Invoyz.Invoices.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +17,10 @@ builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.C
 builder.Services.AddScoped<DbContext>(provider => provider.GetRequiredService<Context>());
 
 // Register Repositories
-builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
-builder.Services.AddScoped<IRepository<Product>, Repository<Product>>();
-builder.Services.AddScoped<IRepository<Invoice>, Repository<Invoice>>();
-builder.Services.AddScoped<IRepository<InvoiceLine>, Repository<InvoiceLine>>();
+builder.Services.AddScoped<IRepository<Customer, CustomerReadDto, CustomerWriteDto>, Repository<Customer, CustomerReadDto, CustomerWriteDto>>();
+builder.Services.AddScoped<IRepository<Product, ProductReadDto, ProductWriteDto>, Repository<Product, ProductReadDto, ProductWriteDto>>();
+builder.Services.AddScoped<IRepository<Invoice, InvoiceReadDto, InvoiceWriteDto>, Repository<Invoice, InvoiceReadDto, InvoiceWriteDto>>();
+builder.Services.AddScoped<IRepository<InvoiceLine, InvoiceLineReadDto, InvoiceLineWriteDto>, Repository<InvoiceLine, InvoiceLineReadDto, InvoiceLineWriteDto>>();
 
 // Register Services
 builder.Services.AddScoped<ICustomerService, CustomerService>();

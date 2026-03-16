@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Invoyz.Invoices.Domain.Services
 {
-    public class InvoiceService(IRepository<Invoice> repository) : BaseService<Invoice, InvoiceReadDto, InvoiceWriteDto>(repository), IInvoiceService
+    public class InvoiceService(IRepository<Invoice, InvoiceReadDto, InvoiceWriteDto> repository) : BaseService<Invoice, InvoiceReadDto, InvoiceWriteDto>(repository), IInvoiceService
     {
         protected override Invoice CreateEntityFromWriteDto(InvoiceWriteDto dto)
         {

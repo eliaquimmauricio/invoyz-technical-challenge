@@ -4,11 +4,12 @@ using Invoyz.Invoices.Domain.Interfaces.Services;
 
 namespace Invoyz.Invoices.Domain.Services
 {
-    public abstract class BaseService<TEntity, TReadDto, TWriteDto>(IRepository<TEntity> repository) : IBaseService<TReadDto, TWriteDto> where TEntity : BaseEntity<TReadDto, TWriteDto>
+    public abstract class BaseService<TEntity, TReadDto, TWriteDto>(IRepository<TEntity, TReadDto, TWriteDto> repository) : IBaseService<TReadDto, TWriteDto> 
+        where TEntity : BaseEntity<TReadDto, TWriteDto>
         where TReadDto : class
         where TWriteDto : class
     {
-        protected readonly IRepository<TEntity> repository = repository;
+        protected readonly IRepository<TEntity, TReadDto, TWriteDto> repository = repository;
 
         protected abstract TEntity CreateEntityFromWriteDto(TWriteDto dto);
 
