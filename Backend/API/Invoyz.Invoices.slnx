@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/0 - Test/" />
+  <Folder Name="/0 - Test/">
+    <Project Path="Invoyz.Invoices.Tests/Invoyz.Invoices.Tests.csproj" />
+  </Folder>
   <Folder Name="/1 - Presentation/">
     <Project Path="Invoyz.Invoices.Api/Invoyz.Invoices.Api.csproj" />
   </Folder>
