@@ -1,22 +1,64 @@
-# Invoyz - Invoice Management System Frontend
+# 🧾 Invoyz — Invoice Management Frontend
 
-A modern web application built with Vue.js 3 and Vuetify for managing customers, products, and invoices.
+A modern **Vue.js 3** web application built with **Vuetify** for managing customers, products, and invoices.
 
-## Features
+The frontend provides an intuitive interface for interacting with the Invoyz API, enabling users to manage billing workflows efficiently.
 
-- Customer Management (CRUD operations)
-- Product Management (CRUD operations)
-- Invoice Management with line items
-- Responsive design with Vuetify components
-- Clean and intuitive UX
-- Real-time calculations for invoice totals
+---
 
-## Prerequisites
+# 🚀 Features
 
-- Node.js (v18 or higher)
-- npm or yarn
+### 👤 Customer Management
+Create, edit, view, and delete customer records.
 
-## Installation
+### 📦 Product Management
+Maintain a catalog of products with pricing information.
+
+### 🧾 Invoice Management
+Create invoices with multiple line items and automatic totals calculation.
+
+### 📱 Responsive UI
+Modern responsive interface built with **Vuetify Material Design components**.
+
+### 🧮 Real-Time Calculations
+Automatic calculation of invoice totals and line item values.
+
+### ✨ Clean UX
+Simple and intuitive user experience for financial operations.
+
+---
+
+# 🧰 Technology Stack
+
+## 🖥️ Core Framework
+
+- **Vue.js 3** — Progressive JavaScript framework  
+- **Vite** — Modern frontend build tool  
+
+## 🎨 UI & State
+
+- **Vuetify 3** — Material Design component framework  
+- **Vue Router** — Official routing library for Vue  
+- **Pinia** — State management  
+
+## 🌐 Networking
+
+- **Axios** — HTTP client for API communication  
+
+---
+
+# 🧑‍💻 Prerequisites
+
+Before running the project, make sure you have:
+
+- **Node.js 18+**
+- **npm** or **yarn**
+
+---
+
+# ⚙️ Installation
+
+Install dependencies and start the development server.
 
 ```bash
 # Install dependencies
@@ -30,30 +72,3 @@ npm run build
 
 # Preview production build
 npm run preview
-```
-
-## API Configuration
-
-The application connects to the backend API at `https://localhost:7139`. The proxy is configured in `vite.config.js` to handle CORS issues during development.
-
-## Project Structure
-
-```
-src/
-├── components/      # Reusable components
-├── views/          # Page components
-├── router/         # Vue Router configuration
-├── services/       # API services
-├── stores/         # Pinia stores
-├── plugins/        # Plugin configurations (Vuetify)
-└── main.js         # Application entry point
-```
-
-## Technologies Used
-
-- Vue.js 3 - Progressive JavaScript Framework
-- Vuetify 3 - Material Design Component Framework
-- Vue Router - Official router for Vue.js
-- Pinia - State management
-- Axios - HTTP client
-- Vite - Build tool
