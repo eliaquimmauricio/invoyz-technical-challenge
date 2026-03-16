@@ -7,6 +7,9 @@ using Invoyz.Invoices.Domain.Entities;
 using Invoyz.Invoices.Domain.Interfaces.Data;
 using Invoyz.Invoices.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Hangfire;
+using Hangfire.SqlServer;
+using Invoyz.Invoices.Domain.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,26 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceLineService, InvoiceLineService>();
+builder.Services.AddScoped<IPdfGeneratorService, PdfGeneratorService>();
+
+//Register utility services
+builder.Services.AddScoped<IFileUtility, FileUtility>();
+
+// Configure HangFire
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+    {
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        DisableGlobalLocks = true
+    }));
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddControllers();
 
@@ -56,6 +79,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/hangfire");
 
 app.MapControllers();
 

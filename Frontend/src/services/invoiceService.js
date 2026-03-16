@@ -22,7 +22,7 @@ export const invoiceService = {
   },
   
   generatePDF(id) {
-    return api.get(`/Invoices/${id}/pdf`, {
+    return api.post(`/Invoices/${id}/generate-pdf`, {
       responseType: 'blob'
     })
   }

@@ -204,30 +204,9 @@ const goBack = () => {
 }
 
 const generatePDF = async () => {
-  try {
-    const response = await invoiceService.generatePDF(route.params.id)
-    
-    // Create a blob from the PDF response
-    const blob = new Blob([response.data], { type: 'application/pdf' })
-    
-    // Create a download link
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `Invoice_${invoice.value.invoiceNumber}.pdf`
-    
-    // Trigger download
-    document.body.appendChild(link)
-    link.click()
-    
-    // Cleanup
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
-    
-    notificationStore.showSuccess('PDF generated successfully')
-  } catch (error) {
-    notificationStore.showError('Error generating PDF')
-  }
+  await invoiceService.generatePDF(route.params.id)
+    .then(() => notificationStore.showSuccess('The PDF will be generated shortly. Please check your email.'))
+    .catch(() => notificationStore.showError('Error generating PDF'))
 }
 
 onMounted(() => {

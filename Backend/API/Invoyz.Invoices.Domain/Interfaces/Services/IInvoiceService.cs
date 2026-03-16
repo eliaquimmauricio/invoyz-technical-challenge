@@ -4,5 +4,6 @@ namespace Invoyz.Invoices.Domain.Interfaces.Services
 {
     public interface IInvoiceService : IBaseService<InvoiceReadDto, InvoiceWriteDto>
     {
+        Task GeneratePdfAndSendByEmail(Guid id);
     }
 }

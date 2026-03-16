@@ -1,4 +1,5 @@
 using Invoyz.Invoices.Domain.Dtos.Invoices;
+using Hangfire;
 
 namespace Invoyz.Invoices.Api.Controllers
 {
@@ -34,6 +35,12 @@ namespace Invoyz.Invoices.Api.Controllers
         public async Task Delete(Guid id)
         {
             await invoiceService.DeleteAsync(id);
+        }
+
+        [HttpPost("{id}/generate-pdf")]
+        public async Task GeneratePdf(Guid id)
+        {
+            BackgroundJob.Enqueue(() => invoiceService.GeneratePdfAndSendByEmail(id));
         }
     }
 }
