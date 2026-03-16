@@ -89,7 +89,7 @@ html {
 }
 
 .brand-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);

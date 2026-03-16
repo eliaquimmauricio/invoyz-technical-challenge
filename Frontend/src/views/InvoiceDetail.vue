@@ -203,231 +203,31 @@ const goBack = () => {
   router.push('/invoices')
 }
 
-const generatePDF = () => {
-  // Create a simple HTML representation of the invoice for printing
-  const printWindow = window.open('', '_blank')
-  if (!printWindow) {
-    notificationStore.showError('Please allow popups to generate PDF')
-    return
+const generatePDF = async () => {
+  try {
+    const response = await invoiceService.generatePDF(route.params.id)
+    
+    // Create a blob from the PDF response
+    const blob = new Blob([response.data], { type: 'application/pdf' })
+    
+    // Create a download link
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `Invoice_${invoice.value.invoiceNumber}.pdf`
+    
+    // Trigger download
+    document.body.appendChild(link)
+    link.click()
+    
+    // Cleanup
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+    
+    notificationStore.showSuccess('PDF generated successfully')
+  } catch (error) {
+    notificationStore.showError('Error generating PDF')
   }
-
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Invoice ${invoice.value.invoiceNumber}</title>
-      <style>
-        body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-          margin: 40px;
-          color: #1E293B;
-        }
-        .header {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 40px;
-          padding-bottom: 20px;
-          border-bottom: 3px solid #6366F1;
-        }
-        .invoice-title {
-          font-size: 36px;
-          color: #6366F1;
-          margin: 0;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-        }
-        .brand-logo {
-          font-size: 24px;
-          font-weight: 700;
-          background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin-bottom: 8px;
-        }
-        .invoice-number {
-          font-size: 18px;
-          color: #64748B;
-          font-weight: 500;
-        }
-        .section {
-          margin-bottom: 30px;
-        }
-        .section-title {
-          font-size: 18px;
-          font-weight: 700;
-          color: #6366F1;
-          margin-bottom: 10px;
-          padding-bottom: 5px;
-          border-bottom: 2px solid #E2E8F0;
-        }
-        .info-row {
-          display: flex;
-          margin-bottom: 8px;
-        }
-        .info-label {
-          font-weight: 600;
-          width: 150px;
-          color: #475569;
-        }
-        .info-value {
-          color: #1E293B;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 20px 0;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        th {
-          background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-          color: white;
-          padding: 14px 12px;
-          text-align: left;
-          font-weight: 600;
-        }
-        td {
-          padding: 12px;
-          border-bottom: 1px solid #E2E8F0;
-        }
-        tr:hover {
-          background-color: #F8FAFC;
-        }
-        .text-right {
-          text-align: right;
-        }
-        .totals {
-          float: right;
-          width: 350px;
-          margin-top: 20px;
-          background: #F8FAFC;
-          padding: 20px;
-          border-radius: 8px;
-        }
-        .totals-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 10px 0;
-          font-size: 16px;
-        }
-        .grand-total {
-          font-size: 28px;
-          font-weight: 800;
-          color: #10B981;
-          border-top: 3px solid #6366F1;
-          padding-top: 15px;
-          margin-top: 15px;
-        }
-        @media print {
-          body { margin: 0; }
-          .no-print { display: none; }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <div>
-          <div class="brand-logo">invoyz</div>
-          <h1 class="invoice-title">INVOICE</h1>
-          <p class="invoice-number">#${invoice.value.invoiceNumber}</p>
-        </div>
-        <div>
-          <button class="no-print" onclick="window.print()" style="padding: 12px 24px; background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: 600; font-size: 14px;">
-            Print / Save as PDF
-          </button>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
-        <div class="section" style="flex: 1; margin-right: 20px;">
-          <div class="section-title">Customer Information</div>
-          <div class="info-row">
-            <span class="info-label">Name:</span>
-            <span class="info-value">${invoice.value.customer?.name || 'N/A'}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">VAT Number:</span>
-            <span class="info-value">${invoice.value.customer?.vatNumber || 'N/A'}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Email:</span>
-            <span class="info-value">${invoice.value.customer?.email || 'N/A'}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Address:</span>
-            <span class="info-value">${invoice.value.customer?.address || 'N/A'}</span>
-          </div>
-        </div>
-
-        <div class="section" style="flex: 1;">
-          <div class="section-title">Invoice Details</div>
-          <div class="info-row">
-            <span class="info-label">Issue Date:</span>
-            <span>${formatDate(invoice.value.issueDate)}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Due Date:</span>
-            <span>${formatDate(invoice.value.dueDate)}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Status:</span>
-            <span>${getStatusLabel(invoice.value.status)}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title">Invoice Lines</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th class="text-right">Qty</th>
-              <th class="text-right">Unit Price</th>
-              <th class="text-right">Tax Rate</th>
-              <th class="text-right">Subtotal</th>
-              <th class="text-right">Tax</th>
-              <th class="text-right">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${invoice.value.lines?.map(line => `
-              <tr>
-                <td>${line.product?.name || 'Unknown'}</td>
-                <td class="text-right">${line.quantity}</td>
-                <td class="text-right">${formatCurrency(line.unitPrice)}</td>
-                <td class="text-right">${line.taxRate}%</td>
-                <td class="text-right">${formatCurrency(line.lineTotal)}</td>
-                <td class="text-right">${formatCurrency(line.lineTax)}</td>
-                <td class="text-right"><strong>${formatCurrency(line.lineTotal + line.lineTax)}</strong></td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-
-      <div class="totals">
-        <div class="totals-row">
-          <span>Subtotal:</span>
-          <span>${formatCurrency(invoice.value.subTotal)}</span>
-        </div>
-        <div class="totals-row">
-          <span>Total Tax:</span>
-          <span>${formatCurrency(invoice.value.totalTax)}</span>
-        </div>
-        <div class="totals-row grand-total">
-          <span>Grand Total:</span>
-          <span>${formatCurrency(invoice.value.grandTotal)}</span>
-        </div>
-      </div>
-    </body>
-    </html>
-  `
-
-  printWindow.document.write(htmlContent)
-  printWindow.document.close()
-  
-  notificationStore.showSuccess('PDF preview opened. Use browser print to save as PDF.')
 }
 
 onMounted(() => {
